@@ -4,7 +4,7 @@ curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
 if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check; echo $?)" -eq "0" ]]; then
-mv /root/.trash /root/check_wod/last.check
+mv /root/check_wod/last.check /root/.trash
 exit 1
 fi
 
