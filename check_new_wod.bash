@@ -3,7 +3,7 @@
 curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
-if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check 2>&1 > /dev/null; echo $?)" -eq "0" ]]; then
+if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check; echo $?)" -eq "0" ]]; then
 mv /root/check_wod/last.check /root/.trash
 exit 1
 fi
@@ -12,7 +12,7 @@ echo "WOD" > /root/check_wod/new.wod
 date  +%d" "%B" "%y >> /root/check_wod/new.wod
 grep -B 20 "$(date +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/new.wod
 
-if [[ "$(diff /root/check_wod/new.wod /root/check_wod/old.wod 2>&1 > /dev/null; echo $?)" -eq "0" ]]; then
+if [[ "$(diff /root/check_wod/new.wod /root/check_wod/old.wod 2>&1 > /dev/null; echo $?)" -eq "1" ]]; then
     echo "WOD" > /root/check_wod/new.wod
     date --date="Tomorrow" +%d" "%B" "%y >> /root/check_wod/new.wod
     grep -B 20 "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/new.wod
