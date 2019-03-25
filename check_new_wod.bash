@@ -18,6 +18,7 @@ fi
 echo "WOD" > /root/check_wod/today.wod
 # add the date in the format like (monday 25 march 19) in the file
 date  +%A" "%d" "%B" "%y >> /root/check_wod/today.wod
+echo
 # do some magic with grep and sed to pull out the latest wod and put it into DA file
 grep -B 20 "$(date +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/today.wod
 
