@@ -3,8 +3,8 @@
 source /root/dtl_wod/.telegram.vars
 
 # VARIABLES
-URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
-CHAT_LIST="$(curl ${URL} | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
+URL="https://api.telegram.org/bot${TOKEN}"
+CHAT_LIST="$(curl ${URL}/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
 
 
 #download version of the page
@@ -35,7 +35,7 @@ if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null
         # send message to telegram bot
         for CHAT_ID in ${CHAT_LIST}
             do
-            curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+            curl -s -X POST ${URL}/sendMessage -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
         done
         mv /root/check_wod/new.wod /root/check_wod/old.wod
     fi
