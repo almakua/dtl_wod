@@ -37,7 +37,7 @@ if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null
         MESSAGE="$(cat /root/check_wod/new.wod)"
         # send message to telegram bot
         curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
-
+    fi
 mv /root/check_wod/new.wod /root/check_wod/old.wod
 
 fi
