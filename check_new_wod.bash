@@ -24,7 +24,7 @@ grep -B 20 "$(date +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|im
 
 # now compare the wod with the latest one sent to the bot, if the same, 
 if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null; echo $?)" -eq "0" ]]; then
-    if [[ "$(grep "$(date --date="Tomorrow" +%d" "%B" "%y)" last.check 2>&1  > /dev/null; echo $?)" -eq "0" ]]; then 
+    if [[ "$(grep "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check 2>&1  > /dev/null; echo $?)" -eq "0" ]]; then 
         echo "WOD" > /root/check_wod/tomorrow.wod
         date --date="Tomorrow" +%A" "%d" "%B" "%y >> /root/check_wod/tomorrow.wod
         grep -B 20 "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/tomorrow.wod
