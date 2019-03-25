@@ -12,7 +12,7 @@ echo "WOD" > /root/check_wod/new.wod
 date  +%d" "%B" "%y >> /root/check_wod/new.wod
 grep -B 20 "$(date +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/new.wod
 
-if [[ "$(diff /root/check_wod/new.wod /root/check_wod/old.wod 2>&1 > /dev/null; echo $?)" -eq "1" ]]; then
+if [[ "$(diff /root/check_wod/new.wod /root/check_wod/old.wod 2>&1 > /dev/null; echo $?)" -eq "0" ]]; then
     echo "WOD" > /root/check_wod/new.wod
     date --date="Tomorrow" +%d" "%B" "%y >> /root/check_wod/new.wod
     grep -B 20 "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/new.wod
