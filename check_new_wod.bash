@@ -4,7 +4,7 @@ source /root/dtl_wod/.telegram.vars
 
 # VARIABLES
 URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
-CHAT_LIST="$(curl https://api.telegram.org/bot800535467:AAF4PhStyrQU9T_HXjKSNWxw9_WwEphRnwo/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
+CHAT_LIST="$(curl ${URL} | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
 
 
 #download version of the page
