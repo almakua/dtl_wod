@@ -4,6 +4,8 @@ source /root/dtl_wod/.telegram.vars
 
 # VARIABLES
 URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
+CHAT_LIST="$(curl https://api.telegram.org/bot800535467:AAF4PhStyrQU9T_HXjKSNWxw9_WwEphRnwo/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
+
 
 #download version of the page
 curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
@@ -31,7 +33,10 @@ if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null
         cp -prf /root/check_wod/tomorrow.wod /root/check_wod/new.wod
         MESSAGE="$(cat /root/check_wod/new.wod)"
         # send message to telegram bot
-        curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+        for CHAT_ID in ${CHAT_LIST}
+            do
+            curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+        done
         mv /root/check_wod/new.wod /root/check_wod/old.wod
     fi
 
@@ -39,7 +44,10 @@ else
     cp -prf /root/check_wod/today.wod /root/check_wod/new.wod
     MESSAGE="$(cat /root/check_wod/new.wod)"
     # send message to telegram bot
-    curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+    for CHAT_ID in ${CHAT_LIST}
+        do
+        curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+    done
     mv /root/check_wod/new.wod /root/check_wod/old.wod
 fi
 
