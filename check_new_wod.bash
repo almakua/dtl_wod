@@ -18,4 +18,5 @@ if [[ "$(diff /root/check_wod/new.wod /root/check_wod/old.wod 2>&1 > /dev/null; 
     grep -B 20 "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/new.wod
 fi
 
+cat /root/check_wod/new.wod
 exit 0
