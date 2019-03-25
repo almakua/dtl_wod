@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# VARIABLES
-TOKEN="800535467:AAF4PhStyrQU9T_HXjKSNWxw9_WwEphRnwo"
-URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
-CHAT_ID="22423698"
+source /root/dtl_wod/.telegram.vars
 
+# VARIABLES
+URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
 
 #download version of the page
 curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
