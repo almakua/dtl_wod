@@ -2,8 +2,7 @@
 
 # VARIABLES
 TOKEN="800535467:AAF4PhStyrQU9T_HXjKSNWxw9_WwEphRnwo"
-MESSAGE="$(cat /root/check_wod/new.wod)"
-URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+URL="https://api.telegram.org/bot${TOKEN}/sendMessage"
 CHAT_ID="22423698"
 
 
@@ -11,7 +10,7 @@ CHAT_ID="22423698"
 curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
-if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check; echo $?)" -eq "0" ]]; then
+if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check 2>&1 >/dev/null; echo $?)" -eq "0" ]]; then
 mv /root/check_wod/last.check /root/.trash
 exit 1
 fi
@@ -30,12 +29,14 @@ if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null
         date --date="Tomorrow" +%A" "%d" "%B" "%y >> /root/check_wod/tomorrow.wod
         grep -B 20 "$(date --date="Tomorrow" +%d" "%B" "%y)" /root/check_wod/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g' | sed -e 's/^[ \t]*//' >> /root/check_wod/tomorrow.wod
         cp -prf /root/check_wod/tomorrow.wod /root/check_wod/new.wod
+        MESSAGE="$(cat /root/check_wod/new.wod)"
         # send message to telegram bot
-        curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE"
+        curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
     else
         cp -prf /root/check_wod/today.wod /root/check_wod/new.wod
+        MESSAGE="$(cat /root/check_wod/new.wod)"
         # send message to telegram bot
-        curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE"
+        curl -s -X POST ${URL} -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
 
 mv /root/check_wod/new.wod /root/check_wod/old.wod
 
