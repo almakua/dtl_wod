@@ -48,7 +48,7 @@ else
     # send message to telegram bot
     for CHAT_ID in $(cat /root/check_wod/chat.list)
         do
-        curl -s -X POST ${URL}/sednMessages -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+        curl -s -X POST ${URL}/sendMessage -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
     done
     mv /root/check_wod/new.wod /root/check_wod/old.wod
 fi
