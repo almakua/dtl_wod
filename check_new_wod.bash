@@ -8,7 +8,7 @@ CHAT_LIST="$(curl ${URL}/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n
 
 
 #download version of the page
-curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
+#curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
 if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check 2>&1 >/dev/null; echo $?)" -eq "0" ]]; then
