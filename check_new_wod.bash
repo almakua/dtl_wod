@@ -5,6 +5,7 @@ source /root/dtl_wod/.telegram.vars
 # VARIABLES
 URL="https://api.telegram.org/bot${TOKEN}"
 
+echo "################################################"
 echo "Starting"
 date 
 
@@ -67,4 +68,6 @@ else
     mv /root/check_wod/new.wod /root/check_wod/old.wod
 fi
 echo "Process completed, exiting..."
+echo "################################################"
+echo 
 exit 0
