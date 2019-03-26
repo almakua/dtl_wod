@@ -4,11 +4,13 @@ source /root/dtl_wod/.telegram.vars
 
 # VARIABLES
 URL="https://api.telegram.org/bot${TOKEN}"
-CHAT_LIST="$(curl ${URL}/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3)"
 
+# update chat list
+curl ${URL}/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3 >> /root/check_wod/.chat.list
+sort /root/check_wod/.chat.list | uniq > /root/check_wod/chat.list
 
 #download version of the page
-#curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
+curl -o /root/check_wod/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
 if [[ "$(diff /root/check_wod/last.check /root/check_wod/prev.check 2>&1 >/dev/null; echo $?)" -eq "0" ]]; then
@@ -33,7 +35,7 @@ if [[ "$(diff /root/check_wod/today.wod /root/check_wod/old.wod 2>&1 > /dev/null
         cp -prf /root/check_wod/tomorrow.wod /root/check_wod/new.wod
         MESSAGE="$(cat /root/check_wod/new.wod)"
         # send message to telegram bot
-        for CHAT_ID in ${CHAT_LIST}
+        for CHAT_ID in $(cat /root/check_wod/chat.list)
             do
             curl -s -X POST ${URL}/sendMessage -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
         done
@@ -44,9 +46,9 @@ else
     cp -prf /root/check_wod/today.wod /root/check_wod/new.wod
     MESSAGE="$(cat /root/check_wod/new.wod)"
     # send message to telegram bot
-    for CHAT_ID in ${CHAT_LIST}
+    for CHAT_ID in $(cat /root/check_wod/chat.list)
         do
-        echo curl -s -X POST ${URL}/sednMessages -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
+        curl -s -X POST ${URL}/sednMessages -d chat_id=${CHAT_ID} -d text="${MESSAGE}"
     done
     mv /root/check_wod/new.wod /root/check_wod/old.wod
 fi
