@@ -6,7 +6,7 @@
 
 ################ START VARIABLES' SECTION #############
 # set up home dir
-homedir="$(realpath $(dirname $0))"
+homedir="$(realpath $(dirname $0) | sed -e 's/\/bin//' )"
 # load token file
 source ${homedir}/configs/telegram.vars
 # telegram API base url
