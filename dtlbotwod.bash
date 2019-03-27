@@ -91,12 +91,16 @@ log "############# Starting... #############"
 
 log "Check if a new WOD has been released"
 
+# 
+update_chatlist
+
 # download a newer version of the wod page
 curl -s -o ${homedir}/work/last.check https://legnano.dynamictraininglab.com/wod
 
 # if the page is the same as last time, leave
 if [[ "$(diff ${homedir}/work/last.check ${homedir}/work/prev.check 2>&1 >/dev/null; echo $?)" -eq "0" ]]; then
-    log "############# No new WOD released. Exiting... #############" 
+    log "No new WOD released."
+    log "############# Exiting... #############" 
     # Cleanup
     mv ${homedir}/work/last.check /root/.trash
     exit 2
@@ -113,7 +117,8 @@ fi
 log "Notifying everyone of the new release"
 send_message
 
-log "############# Work completed. Exiting... #############"
+log "Work completed."
+log "############# Exiting... #############"
 
 ############# END MAIN' SECTION #############
 
