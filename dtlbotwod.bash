@@ -54,6 +54,7 @@ function update_chatlist () {
     mv ${homedir}/work/chat.list ${homedir}/work/chat.list.pre
     curl -s ${URL}/getUpdates | sed -e 's/[{}]/''/g' | awk -v k="text" '{n=split($0,a,","); for (i=1; i<=n; i++) print a[i]}' | grep "\"chat\":\"id\":" | sort | uniq | cut -d: -f3 >> ${homedir}/work/chat.list.pre
     sort ${homedir}/work/chat.list.pre | uniq > ${homedir}/work/chat.list
+    mv ${homedir}/work/chat.list.pre ~/.trash/chat.list.pre.$(date +%Y%m%d%H%M)
 }
 
 #
@@ -102,7 +103,7 @@ if [[ "$(diff ${homedir}/work/last.check ${homedir}/work/prev.check 2>&1 >/dev/n
     log "No new WOD released."
     log "############# Exiting... #############" 
     # Cleanup
-    mv ${homedir}/work/last.check /root/.trash
+    mv ${homedir}/work/last.check ~/.trash/last.check.$(date +%Y%m%d%H%M)
     exit 2
 fi
 log "New WOD Released"
@@ -117,7 +118,10 @@ fi
 log "Notifying everyone of the new release"
 send_message
 
-log "Work completed."
+# last cleanup
+log "Work completed. Cleaning up..."
+find ~/.trash/ -mtime +2 -delete
+
 log "############# Exiting... #############"
 
 ############# END MAIN' SECTION #############
