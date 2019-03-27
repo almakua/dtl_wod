@@ -75,6 +75,7 @@ function send_message () {
         curl -s -X POST ${URL}/sendMessage -d chat_id=${chat_id} -d text="$(cat ${homedir}/work/new.wod)"
     done
     mv ${homedir}/work/new.wod ${homedir}/work/old.wod
+    mv ${homedir}/work/last.check ${homedir}/work/prev.check
 }
 
 ############# END FUNCTIONS' SECTION #############
