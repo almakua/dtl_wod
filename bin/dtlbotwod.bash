@@ -8,7 +8,7 @@
 # set up home dir
 homedir="$(realpath $(dirname $0))"
 # load token file
-source ./.telegram.vars
+source ${homedir}/configs/telegram.vars
 # telegram API base url
 URL="https://api.telegram.org/bot${TOKEN}"
 # logfile configurations
