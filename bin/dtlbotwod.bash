@@ -64,7 +64,7 @@ function create_wod () {
     echo >> ${homedir}/work/new.wod
     date --date="${1}"  +%A" "%d" "%B" "%y >> ${homedir}/work/new.wod
     echo >> ${homedir}/work/new.wod
-    grep -B 20 "$(date --date="${1}" +%d" "%B" "%y)" ${homedir}/work/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g; s/&#160;/ /g' | sed -e 's/^[ \t]*//' >> ${homedir}/work/new.wod
+    grep -B 20 "$(date --date="${1}" +%d" "%B" "%y)" ${homedir}/work/last.check | egrep -v "div|img|class|WOD" | sed -e 's/<br>//g; s/\&\#39\;/ min/g; s/<p>//g; s/<\/p>//g; s/<p//g; s/&#160;/ /g; s/&amp;/\&/g' | sed -e 's/^[ \t]*//' >> ${homedir}/work/new.wod
     echo >> ${homedir}/work/new.wod
 }
 
